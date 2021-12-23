@@ -7,7 +7,6 @@ const category = require("../models/category");
 exports.createbooks =async(req,res,next) =>{
     try {
         const {img,categoryId,title,auother_name,thought,overview,about_the_author} = req.body;
-
         const Books = await books.create({
             img,
             categoryId,
@@ -39,7 +38,7 @@ exports.getbooks = async(req,res,next) =>{
         const limit = parseInt(size);
         const skip = (page - 1)*size
 
-        const Booklist = await books.find({}).limit(limit).skip(skip).populate('categoryId');
+        const Booklist = await books.find({}).limit(limit).skip(skip).populate('categoryId').populate("bookDetails");
         res.status(200).json({
             success: true,
             page,
@@ -53,8 +52,8 @@ exports.getbooks = async(req,res,next) =>{
 }
 exports.getbook = async (req,res,next) =>{
     try {
-        const _id = req.params.id;
-        const Booklists = await books.findOne({_id}).populate('categoryId');
+        const {id} = req.query;
+        const Booklists = await books.find({categoryId:id}).populate('categoryId');
         res.status(200).json({
             success: true,
             Booklists,

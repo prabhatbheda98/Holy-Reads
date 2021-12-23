@@ -28,7 +28,14 @@ const booksSchema = new mongoose.Schema({
     about_the_author:{
         type:String,
         required:true
-    }
+    },
+    bookDetails:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "bookdetails",   
+        }
+    ]
+
 })
 const books = mongoose.model("books", booksSchema);
 
