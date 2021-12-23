@@ -12,7 +12,13 @@ const bookdetailsSchema = new mongoose.Schema({
     description:{
         type:String,
         required:true
-    }
+    },
+    // listByDetail:[
+    //     {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "listbydetail",   
+    //     }
+    // ]
 })
 const bookdetails = mongoose.model("bookdetails",bookdetailsSchema);
 
