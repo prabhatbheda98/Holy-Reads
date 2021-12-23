@@ -53,10 +53,21 @@ exports.getbooks = async(req,res,next) =>{
 exports.getbook = async (req,res,next) =>{
     try {
         const {id} = req.query;
-        const Booklists = await books.find({categoryId:id}).populate('categoryId');
+        const Booklist = await books.find({categoryId:id}).populate('categoryId');
         res.status(200).json({
             success: true,
-            Booklists,
+            Booklist,
+          });       
+    } catch (error) {
+        return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+    }
+}
+exports.getBookById = async(req,res,next)=>{
+    try {
+        const bookList = await books.findOne({_id:req.params.id}).populate('categoryId');
+        res.status(200).json({
+            success: true,
+            bookList,
           });       
     } catch (error) {
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
