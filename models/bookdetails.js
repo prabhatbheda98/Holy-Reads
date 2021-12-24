@@ -13,6 +13,10 @@ const bookdetailsSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    page_no:{
+        type: Number,
+        required:true
+    },
     // listByDetail:[
     //     {
     //     type: mongoose.Schema.Types.ObjectId,

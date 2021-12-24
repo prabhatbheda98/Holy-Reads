@@ -5,11 +5,12 @@ const books = require("../models/books");
 
 exports.createbookDetails = async (req, res, next) => {
     try {
-        const { bookId, heading, description } = req.body;
+        const { bookId, heading, description, page_no } = req.body;
         const bookDetail = await bookdetails.create({
             bookId,
             heading,
-            description
+            description,
+            page_no
         })
         await books.findByIdAndUpdate(bookId, { $push: { bookDetails: bookDetail._id } });
         res.send({
@@ -46,21 +47,13 @@ exports.getbookDetailById = async (req, res, next) => {
 }
 exports.getBookByIdList = async (req, res, next) => {
     try {
-        let { id, page, size } = req.query;
-        if (!page) {
-            page = 1;
-        }
-        if (!size) {
-            size = 1;
-        }
-        const limit = parseInt(size);
-        const skip = (page - 1) * size
-
-        const detail = await bookdetails.find({ bookId: id }).limit(limit).skip(skip).populate("bookId");
+        let { id, page } = req.query;
+        const detail = await bookdetails.findOne({ bookId: id, page_no: page }).populate("bookId");
+        const countBook = await bookdetails.countDocuments({ bookId: id });
         res.status(200).json({
             success: true,
             page:parseInt(page),
-            size,
+            countBook,
             detail,
         });
     } catch (error) {
