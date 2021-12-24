@@ -59,7 +59,7 @@ exports.getBookByIdList = async (req, res, next) => {
         const detail = await bookdetails.find({ bookId: id }).limit(limit).skip(skip).populate("bookId");
         res.status(200).json({
             success: true,
-            page,
+            page:parseInt(page),
             size,
             detail,
         });
