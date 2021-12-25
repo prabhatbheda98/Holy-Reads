@@ -18,7 +18,6 @@ exports.createbookDetails = async (req, res, next) => {
             bookDetail
         })
     } catch (error) {
-        console.log(error);
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }
 }

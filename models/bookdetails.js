@@ -17,6 +17,13 @@ const bookdetailsSchema = new mongoose.Schema({
         type: Number,
         required:true
     },
+    highLight:[
+        {
+            type: mongoose.Schema.Types.ObjectId,
+             ref: "highlight",  
+        }
+    ]
+
     // listByDetail:[
     //     {
     //     type: mongoose.Schema.Types.ObjectId,
