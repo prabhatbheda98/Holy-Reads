@@ -23,8 +23,8 @@ exports.createHighlight = async (req, res, next) => {
 
 exports.getHighlight = async (req, res, next) => {
     try { 
-        let {id,page} = req.query;
-        const highLight = await highlight.find({bookdetailsId:id, page_no:page}).populate("bookdetailsId");
+        let {id,page_no} = req.query;
+        const highLight = await highlight.find({bookdetailsId:id, page_no:page_no}).populate("bookdetailsId");
         res.status(200).json({
             success: true,
             highLight,
