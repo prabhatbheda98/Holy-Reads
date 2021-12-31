@@ -23,8 +23,7 @@ exports.getcategory = async(req,res,next) =>{
         res.status(200).json({
             success: true,
             categorylist,
-          });
-        
+           });
     } catch (error) {
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }

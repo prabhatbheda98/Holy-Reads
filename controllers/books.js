@@ -37,7 +37,6 @@ exports.getbooks = async(req,res,next) =>{
         }
         const limit = parseInt(size);
         const skip = (page - 1)*size
-
         const Booklist = await books.find({}).limit(limit).skip(skip).populate('categoryId').populate("bookDetails");
         res.status(200).json({
             success: true,
@@ -81,15 +80,14 @@ exports.editbook = async (req,res,next) =>{
             title: title,
             auother_name:auother_name,
             thought: thought,
-            overview: overview,
+            overview: overview, 
             about_the_author: about_the_author
         })
         res.status(200).json({
             success: true,
             message: SUCCESS_MESSAGE.SUCCESS_FULLY_EDIT_BOOK,
             editBook,
-          });
-        
+          });   
     } catch (error) {
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }
@@ -99,7 +97,7 @@ exports.deletebook = async (req,res,next) =>{
         const deleteBook = await books.findByIdAndUpdate(req.params.id);
         res.status(200).json({
             success: true,
-            message: SUCCESS_MESSAGE.SUCCESS_FULLY_DELETE_TOPIC,
+            message: SUCCESS_MESSAGE.SUCCESS_FULLY_DELETE_BOOK,
             deleteBook,
           });
     } catch (error) {

@@ -34,9 +34,17 @@ const booksSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "bookdetails",   
         }
-    ]
-    
-
+    ],
+    Read:[
+        {
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"read"
+        }
+    ],
+    favourite: {
+            type: Boolean,
+            default:"false"
+        }
 })
 const books = mongoose.model("books", booksSchema);
 

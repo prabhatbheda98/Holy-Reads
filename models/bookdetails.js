@@ -23,7 +23,6 @@ const bookdetailsSchema = new mongoose.Schema({
              ref: "highlight",  
         }
     ]
-
     // listByDetail:[
     //     {
     //     type: mongoose.Schema.Types.ObjectId,

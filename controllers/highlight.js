@@ -5,11 +5,12 @@ const highlight = require("../models/highlight");
 
 exports.createHighlight = async (req, res, next) => {
     try {
-        const { bookdetailsId, selection, page_no } = req.body
+        const { bookdetailsId, selection, page_no ,note} = req.body
         const highLights = await highlight.create({
             bookdetailsId,
             selection,
-            page_no
+            page_no,
+            note
         })
         await bookDetails.findByIdAndUpdate(bookdetailsId, { $push: { highLight: highLights._id } })
         res.send({
@@ -17,10 +18,10 @@ exports.createHighlight = async (req, res, next) => {
             highLights
         })
     } catch (error) {
+        console.log(error);
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }
 }
-
 exports.getHighlight = async (req, res, next) => {
     try { 
         let {id,page_no} = req.query;
@@ -57,6 +58,7 @@ exports.editHighlight = async (req,res,next) =>{
             edithighLight,
         });
     } catch (error) {
+        console.log(error);
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }
 }
@@ -70,6 +72,34 @@ exports.deleteHighlight = async(req,res,next) =>{
         });
     } catch (error) {
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+    }
+}
+exports.getNote = async(req,res,next) =>{
+    try {
+        let {id,page_no} = req.query;
+        const note = await  highlight.findOne({id,page_no}).populate("bookdetailsId");
+        res.status(200).json({
+            success: true,
+            note,
+          });
+    } catch (error) {
+        return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error)); 
+    }
+}
+exports.createNote = async (req,res,next) =>{
+    try {
+        const {note} = req.body;
+        const addnote = await highlight.findByIdAndUpdate(req.query.id,{
+            note: note,
+        })
+        res.status(200).json({
+            success: true,
+            message: SUCCESS_MESSAGE.SUCCESS_FULLY_ADD_NOTE,
+            addnote,
+        });
+    } catch (error) {
+        console.log(error);
+        return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));      
     }
 }
 

@@ -12,8 +12,11 @@ const highlightSchema = new mongoose.Schema({
     page_no:{
         type:Number,
         required:true
+    },
+    note:{
+        type:String,
+        required:false
     }
-
 })
 const highlight = mongoose.model("highlight",highlightSchema);
 
