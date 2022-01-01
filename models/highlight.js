@@ -5,6 +5,10 @@ const highlightSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "bookdetails",
     },
+    bookId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "books",
+    },
     selection :{
         type: String,
         required:true
@@ -16,7 +20,12 @@ const highlightSchema = new mongoose.Schema({
     note:{
         type:String,
         required:false
+    },
+    nH:{
+        type:Boolean,
+        default:true
     }
+    
 })
 const highlight = mongoose.model("highlight",highlightSchema);
 

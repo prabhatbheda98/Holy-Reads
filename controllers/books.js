@@ -49,6 +49,7 @@ exports.getbooks = async(req,res,next) =>{
         return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
     }
 }
+
 exports.getbook = async (req,res,next) =>{
     try {
         const {id} = req.query;
