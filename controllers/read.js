@@ -27,7 +27,14 @@ exports.createRead = async (req, res, next) => {
 };
 exports.getRead = async (req, res, next) => {
   try {
-    const Reads = await read.find({ completed: false }).populate("bookId");
+    const Reads = await read.find({ completed: false }).populate({
+      path: "bookId",
+      select:"_id img title thought auother_name",
+      populate: {
+        path: "categoryId",
+        select:"_id name"
+      },
+    });
     res.status(200).json({
       success: true,
       Reads,
@@ -62,9 +69,9 @@ exports.getCompleted = async (req, res, next) => {
 
 exports.editcompleted = async (req, res, next) => {
   try {
-    const { completed } = req.body;
-    const editcomplete = await read.findByIdAndUpdate(req.query.id, {
-      completed,
+
+    const editcomplete = await read.findOneAndUpdate({bookId:req.body.bookId},{
+      completed:true
     });
     res.status(200).json({
       success: true,
