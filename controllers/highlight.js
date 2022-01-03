@@ -5,7 +5,7 @@ const highlight = require("../models/highlight");
 
 exports.createHighlight = async (req, res, next) => {
   try {
-    const { bookdetailsId, selection, page_no, note,bookId } = req.body;
+    const { bookdetailsId, selection, page_no, note, bookId } = req.body;
     const highLights = await highlight.create({
       bookdetailsId,
       bookId,
@@ -31,21 +31,40 @@ exports.getHighlight = async (req, res, next) => {
     // const highLight = await highlight.find({bookdetailsId:id, page_no:page_no}).populate("bookdetailsId");
 
     const highLight = await highlight.aggregate([
-         {$group : {_id : "$bookId",
-        //  items: {
-        //     $push: '$$ROOT'
-        //   }
-         }},
-        {
-            "$lookup":{
-                "from":"books",
-                "localField":"_id",
-                "foreignField":"_id",
-                "as":"details",
-            },
+      {
+        $group: {
+          _id: "$bookId",
+          //  items: {
+          //     $push: '$$ROOT'
+          //   }
         },
-        {$unwind:{"path":"$details"}}
+      },
+      {
+        $lookup: {
+          from: "books",
+          localField: "_id",
+          foreignField: "_id",
+          as: "details",
+        },
+      },
+      { $unwind: { path: "$details" } },
     ]);
+    res.status(200).json({
+      success: true,
+      highLight,
+    });
+  } catch (error) {
+    console.log(error);
+    return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+  }
+};
+
+exports.getAllBookHighLight = async (req, res, next) => {
+  try {
+    const { id, page_no } = req.query;
+    const highLight = await highlight
+      .find({ bookdetailsId: id, page_no: page_no })
+      .populate("bookdetailsId");
     res.status(200).json({
       success: true,
       highLight,
@@ -128,14 +147,17 @@ exports.createNote = async (req, res, next) => {
   }
 };
 
-exports.getNoteH = async(req,res,next)=>{
-    try {
-        const NoteHighlight =await highlight.find({nH:true}).populate("bookdetailsId").populate('bookId');
-        res.status(200).json({
-            success: true,
-            NoteHighlight,
-          });
-    } catch (error) {
-        return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
-    }
-}
+exports.getNoteH = async (req, res, next) => {
+  try {
+    const NoteHighlight = await highlight
+      .find({ nH: true })
+      .populate("bookdetailsId")
+      .populate("bookId");
+    res.status(200).json({
+      success: true,
+      NoteHighlight,
+    });
+  } catch (error) {
+    return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+  }
+};
