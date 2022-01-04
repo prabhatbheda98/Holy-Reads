@@ -17,13 +17,11 @@ exports.getFavourite = async(req,res,next)=>{
 
 exports.AddFavourite = async(req,res,next) =>{
     try {
-        const {favourite} = req.body;
-        const addfav = await books.findByIdAndUpdate(req.query.id,{
-            favourite
+        const addfav = await books.findByIdAndUpdate(req.body.id,{
+            favourite:true
         })
         res.status(200).json({
             success: true,
-            message: SUCCESS_MESSAGE.ADD_FAVOURITE,
             addfav,
         });
         

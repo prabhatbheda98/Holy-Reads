@@ -27,9 +27,6 @@ exports.createHighlight = async (req, res, next) => {
 };
 exports.getHighlight = async (req, res, next) => {
   try {
-    let { id, page_no } = req.query;
-    // const highLight = await highlight.find({bookdetailsId:id, page_no:page_no}).populate("bookdetailsId");
-
     const highLight = await highlight.aggregate([
       {
         $group: {
@@ -88,6 +85,21 @@ exports.getHighlightId = async (req, res, next) => {
     return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
   }
 };
+exports.getHighLightList = async (req, res, next) => {
+  try {
+    const highLight = await highlight
+      .find({bookId:req.query.id})
+      .populate("bookdetailsId")
+      .populate("bookId");
+    res.status(200).json({
+      success: true,
+      highLight,
+    });
+  } catch (error) {
+    return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+  }
+};
+
 exports.editHighlight = async (req, res, next) => {
   try {
     const { selection } = req.body;
@@ -147,17 +159,3 @@ exports.createNote = async (req, res, next) => {
   }
 };
 
-exports.getNoteH = async (req, res, next) => {
-  try {
-    const NoteHighlight = await highlight
-      .find({ nH: true })
-      .populate("bookdetailsId")
-      .populate("bookId");
-    res.status(200).json({
-      success: true,
-      NoteHighlight,
-    });
-  } catch (error) {
-    return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
-  }
-};

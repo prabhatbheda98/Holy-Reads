@@ -66,6 +66,18 @@ exports.getCompleted = async (req, res, next) => {
     return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
   }
 };
+exports.getReadeByBookId = async (req, res, next) => {
+  try {
+
+    const complete = await read.findOne({ bookId: req.query.bookId }).populate("bookId");
+    res.status(200).json({
+      success: true,
+      complete,
+    });
+  } catch (error) {
+    return next(Boom.badRequest(HANDEL_ERROR.SOMETHING_WENT_WRONG, error));
+  }
+};
 
 exports.editcompleted = async (req, res, next) => {
   try {

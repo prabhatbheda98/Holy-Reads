@@ -21,10 +21,6 @@ const highlightSchema = new mongoose.Schema({
         type:String,
         required:false
     },
-    nH:{
-        type:Boolean,
-        default:true
-    }
     
 })
 const highlight = mongoose.model("highlight",highlightSchema);
